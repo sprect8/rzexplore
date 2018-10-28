@@ -1,6 +1,4 @@
-'use strict';
-
-const ABI = {
+{
     "contractName": "MOFService",
     "abi": [
       {
@@ -11150,52 +11148,3 @@ const ABI = {
     "schemaVersion": "2.0.1",
     "updatedAt": "2018-10-23T05:02:10.091Z"
   }
-
-angular.module('ethExplorer', ['ngRoute','ui.bootstrap'])
-
-.config(['$routeProvider',
-    function($routeProvider) {
-        $routeProvider.
-            when('/', {
-                templateUrl: 'views/main.html',
-                controller: 'mainCtrl'
-            }).
-            when('/block/:blockId', {
-                templateUrl: 'views/blockInfos.html',
-                controller: 'blockInfosCtrl'
-            }).
-            when('/transaction/:transactionId', {
-                templateUrl: 'views/transactionInfos.html',
-                controller: 'transactionInfosCtrl'
-            }).
-            when('/address/:addressId', {
-                templateUrl: 'views/addressInfo.html',
-                controller: 'addressInfoCtrl'
-            }).
-            otherwise({
-                redirectTo: '/'
-            });
-    }])
-    .run(function($rootScope) {
-        var web3 = new Web3();
-        var eth_node_url = 'http://ethwl2ous-dns-reg1.southeastasia.cloudapp.azure.com:8540'; // TODO: remote URL
-	web3.setProvider(new web3.providers.HttpProvider(eth_node_url));
-        $rootScope.web3 = web3;
-
-        const contractAddress = "0x1f8e57d6262d62a5e1fc14f16a44b13e5c3e6e07";
-
-        let url = "http://ethwl2ous-dns-reg1.southeastasia.cloudapp.azure.com:8540";
-        let customHttpProvider = new ethers.providers.JsonRpcProvider(url);
-
-        $rootScope.contract = new ethers.Contract(contractAddress, ABI.abi, customHttpProvider);
-
-        function sleepFor( sleepDuration ){
-            var now = new Date().getTime();
-            while(new Date().getTime() < now + sleepDuration){ /* do nothing */ } 
-        }
-        var connected = false;
-        if(!web3.isConnected()) {
-            $('#connectwarning').modal({keyboard:false,backdrop:'static'}) 
-            $('#connectwarning').modal('show') 
-        }
-    });
